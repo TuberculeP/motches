@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .  # Contexte à la racine du projet
+      dockerfile: app/Dockerfile
+    environment:
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      DB_USER: ${DB_USER}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_PORT}
+      SESSION_SECRET: ${SESSION_SECRET}
+      EXPRESS_PORT: ${EXPRESS_PORT:-3005}
+      EXPRESS_DOMAIN: ${EXPRESS_DOMAIN}
+      VITE_DOMAIN: ${VITE_DOMAIN}
+      VITE_PORT: ${VITE_PORT}
+      VITE_EXPRESS_URL: ${VITE_EXPRESS_URL}
+    ports:
+      - "${EXPRESS_PORT:-3005}:3000"
+    volumes:
+      - ./app:/usr/src/app
+
+  frontend:
+    build:
+      context: .  # Contexte à la racine du projet
+      dockerfile: webapp/Dockerfile
+      args:
+        VITE_EXPRESS_URL: ${VITE_EXPRESS_URL}
+        VITE_PORT: ${VITE_PORT:-5050}
+    ports:
+      - "${VITE_PORT:-5050}:5000"
+    volumes:
+      - ./webapp:/usr/src/app

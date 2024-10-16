@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*"],
+  "exclude": ["../shared", "**/*.test.ts", "shared/*"] // Exclure tous les chemins possibles liés à shared
+}
